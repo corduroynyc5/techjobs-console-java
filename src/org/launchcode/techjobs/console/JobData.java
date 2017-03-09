@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by LaunchCode
@@ -79,6 +80,39 @@ public class JobData {
             if (aValue.contains(value)) {
                 jobs.add(row);
             }
+        }
+
+        return jobs;
+    }
+
+    /**
+     * Returns results of search for string across all columns.
+     *
+     * So, for example, if a listing has position type "Web - Front End" and name "Front end web dev"
+     * then searching for "web" should not include the listing twice.
+     *
+     *
+     * @param value Value of the field to search for
+     * @return List of all jobs matching the criteria
+     */
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (int i = 0; i < allJobs.size(); i++) {
+
+            for (Map.Entry<String, String> column : allJobs.get(i).entrySet()) {
+
+                if (column.getValue().toLowerCase().contains(value.toLowerCase())){
+
+                    jobs.add(allJobs.get(i));
+                    break;
+                }
+            }
+
         }
 
         return jobs;
